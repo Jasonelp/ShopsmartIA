@@ -152,7 +152,7 @@
                 <div class="px-4 py-5 sm:p-6">
                     <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
                         @csrf
-                        @method('PATCH')
+                        @method('PUT')
 
                         <div class="space-y-4">
                             <div>

@@ -59,7 +59,7 @@
             </div>
 
             <div class="flex gap-4">
-                <a href="{{ route('orders.index') }}"
+                <a href="{{ route('orders.my-orders') }}"
                     class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center px-6 py-3 rounded-lg font-semibold transition">
                     Ver mis pedidos
                 </a>

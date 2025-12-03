@@ -148,7 +148,7 @@
                 </div>
 
                 <!-- Image URL -->
-                <div class="sm:col-span-6">
+                <div class="sm:col-span-3">
                     <label for="image" class="block text-sm font-medium leading-6 text-gray-900">
                         URL de Imagen
                     </label>
@@ -160,8 +160,26 @@
                                placeholder="https://ejemplo.com/imagen.jpg"
                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 @error('image') ring-red-500 @enderror">
                     </div>
-                    <p class="mt-2 text-sm text-gray-500">Ingresa la URL completa de la imagen del producto</p>
+                    <p class="mt-2 text-sm text-gray-500">Ingresa la URL completa de la imagen</p>
                     @error('image')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Image File Upload -->
+                <div class="sm:col-span-3">
+                    <label for="image_file" class="block text-sm font-medium leading-6 text-gray-900">
+                        O Subir Imagen
+                    </label>
+                    <div class="mt-2">
+                        <input type="file"
+                               name="image_file"
+                               id="image_file"
+                               accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-gray-50 focus:outline-none @error('image_file') border-red-500 @enderror">
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">JPG, PNG, GIF, WebP (max 2MB)</p>
+                    @error('image_file')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSmart IA - Presentación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            min-height: 100vh;
+            padding: 60px 80px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.5rem;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .intro-slide {
+            text-align: center;
+            justify-content: center;
+        }
+
+        .intro-slide .slide-title {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+        }
+
+        .intro-slide .tagline {
+            font-size: 1.8rem;
+            color: #00d4ff;
+            margin-bottom: 40px;
+        }
+
+        .intro-slide .author {
+            font-size: 1.3rem;
+            color: #888;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .card p, .card li {
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li::before {
+            content: "✓ ";
+            color: #00ff88;
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 25px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            border: 1px solid #30363d;
+            margin: 20px 0;
+        }
+
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .function { color: #d2a8ff; }
+        .code-block .variable { color: #ffa657; }
+        .code-block .comment { color: #8b949e; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        td {
+            color: #b0b0b0;
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .feature-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-item h4 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .tech-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #00d4ff;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #00d4ff;
+        }
+
+        .section-divider {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            border-radius: 2px;
+            margin: 20px 0;
+        }
+
+        .big-number {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .label {
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Portada -->
+    <div class="slide active intro-slide">
+        <div class="content">
+            <div class="card-icon">🛒</div>
+            <h1 class="slide-title">ShopSmart IA</h1>
+            <p class="tagline">Sistema E-Commerce Inteligente con Laravel 11</p>
+            <div class="section-divider" style="margin: 20px auto;"></div>
+            <p class="author">Desarrollado por: <span class="highlight">Jason</span></p>
+            <p style="color: #666; margin-top: 10px;">Diciembre 2025</p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Tecnologías -->
+    <div class="slide">
+        <h1 class="slide-title">🛠️ Stack Tecnológico</h1>
+        <div class="content">
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div class="icon">🐘</div>
+                    <h4>Laravel 11</h4>
+                    <p style="color: #888;">Framework PHP</p>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">🐬</div>
+                    <h4>MySQL</h4>
+                    <p style="color: #888;">Base de Datos</p>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">🎨</div>
+                    <h4>Blade</h4>
+                    <p style="color: #888;">Motor de Vistas</p>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">🤖</div>
+                    <h4>OpenRouter AI</h4>
+                    <p style="color: #888;">Inteligencia Artificial</p>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">📡</div>
+                    <h4>API RESTful</h4>
+                    <p style="color: #888;">Arquitectura</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="big-number">4</div>
+                    <p class="label">CRUDs Principales</p>
+                </div>
+                <div class="stat-item">
+                    <div class="big-number">10+</div>
+                    <p class="label">Modelos</p>
+                </div>
+                <div class="stat-item">
+                    <div class="big-number">20+</div>
+                    <p class="label">Controladores</p>
+                </div>
+                <div class="stat-item">
+                    <div class="big-number">3</div>
+                    <p class="label">Roles de Usuario</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Arquitectura -->
+    <div class="slide">
+        <h1 class="slide-title">🏗️ Arquitectura MVC</h1>
+        <div class="content">
+            <div class="code-block">
+<pre>
+ShopSmart/
+├── <span class="keyword">app/</span>
+│   ├── Http/Controllers/
+│   │   ├── <span class="function">Admin/</span>      ← Panel de Administración
+│   │   ├── <span class="function">Api/</span>        ← API RESTful (JSON)
+│   │   └── <span class="function">Web/</span>        ← Vistas para Clientes
+│   ├── <span class="variable">Models/</span>         ← 10 Modelos Eloquent
+│   └── <span class="variable">Services/</span>       ← Lógica de Negocio
+├── <span class="keyword">database/</span>
+│   └── migrations/     ← Estructura de BD
+├── <span class="keyword">resources/views/</span>   ← Vistas Blade
+├── <span class="keyword">routes/</span>            ← web.php + api.php
+└── <span class="keyword">public/storage/</span>    ← Imágenes Productos
+</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: CRUD Productos -->
+    <div class="slide">
+        <h1 class="slide-title">📦 CRUD #1: Productos</h1>
+        <p class="slide-subtitle">app/Http/Controllers/Admin/ProductController.php</p>
+        <div class="content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Método</th>
+                        <th>Ruta</th>
+                        <th>Función</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="highlight">index()</span></td>
+                        <td>GET /admin/products</td>
+                        <td>Lista todos los productos</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">create()</span></td>
+                        <td>GET /admin/products/create</td>
+                        <td>Formulario nuevo producto</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">store()</span></td>
+                        <td>POST /admin/products</td>
+                        <td>Guarda producto + imagen</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">edit($id)</span></td>
+                        <td>GET /admin/products/{id}/edit</td>
+                        <td>Formulario editar</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">update()</span></td>
+                        <td>PUT /admin/products/{id}</td>
+                        <td>Actualiza producto</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">destroy()</span></td>
+                        <td>DELETE /admin/products/{id}</td>
+                        <td>Elimina producto</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 5: Subida de Imágenes -->
+    <div class="slide">
+        <h1 class="slide-title">📸 Subida de Imágenes</h1>
+        <div class="content">
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Código para subir imagen</h3>
+                    <div class="code-block">
+<pre>
+<span class="keyword">if</span> (<span class="variable">$request</span>-><span class="function">hasFile</span>(<span class="string">'image'</span>)) {
+    <span class="variable">$validated</span>[<span class="string">'image'</span>] = 
+        <span class="variable">$request</span>-><span class="function">file</span>(<span class="string">'image'</span>)
+            -><span class="function">store</span>(<span class="string">'products'</span>, <span class="string">'public'</span>);
+}
+</pre>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>¿Dónde se guardan?</h3>
+                    <ul style="margin-top: 20px;">
+                        <li>Carpeta: <code>storage/app/public/products/</code></li>
+                        <li>Disco: <code>public</code> (accesible web)</li>
+                        <li>Nombre: Laravel genera nombre único</li>
+                        <li>URL: <code>/storage/products/imagen.jpg</code></li>
+                    </ul>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,255,136,0.1); border-radius: 10px; border-left: 4px solid #00ff88;">
+                        <p style="color: #00ff88;">✓ Validación: jpeg, png, jpg, gif, webp (max 2MB)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: CRUD Categorías -->
+    <div class="slide">
+        <h1 class="slide-title">📂 CRUD #2: Categorías</h1>
+        <p class="slide-subtitle">app/Http/Controllers/Admin/CategoryController.php</p>
+        <div class="content">
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Operaciones CRUD</h3>
+                    <ul style="margin-top: 15px;">
+                        <li>index() → Lista con paginación</li>
+                        <li>create() → Formulario nueva</li>
+                        <li>store() → Guardar categoría</li>
+                        <li>show($id) → Ver productos</li>
+                        <li>edit($id) → Editar</li>
+                        <li>update() → Actualizar</li>
+                        <li>destroy() → Eliminar</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Código destacado</h3>
+                    <div class="code-block">
+<pre>
+<span class="variable">$categories</span> = Category::<span class="function">withCount</span>(<span class="string">'products'</span>)
+    -><span class="function">orderBy</span>(<span class="string">'id'</span>, <span class="string">'DESC'</span>)
+    -><span class="function">paginate</span>(10);
+</pre>
+                    </div>
+                    <p style="margin-top: 15px; color: #888;">
+                        <span class="highlight">withCount()</span> cuenta productos sin queries extra
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: CRUD Órdenes -->
+    <div class="slide">
+        <h1 class="slide-title">📋 CRUD #3: Órdenes</h1>
+        <p class="slide-subtitle">app/Http/Controllers/Admin/OrderController.php</p>
+        <div class="content">
+            <div class="flow-diagram">
+                <div class="flow-step">📝 Pendiente</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">✅ Confirmado</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">🚚 Enviado</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">📦 Entregado</div>
+            </div>
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <h3>Validación de Estados</h3>
+                <div class="code-block">
+<pre>
+<span class="comment">// No se puede retroceder el estado</span>
+<span class="variable">$estadosOrdenados</span> = [<span class="string">'pendiente'</span>, <span class="string">'confirmado'</span>, <span class="string">'enviado'</span>, <span class="string">'entregado'</span>];
+
+<span class="keyword">if</span> (<span class="variable">$nuevoEstadoIndex</span> < <span class="variable">$estadoActualIndex</span>) {
+    <span class="keyword">return</span> redirect()-><span class="function">back</span>()
+        -><span class="function">with</span>(<span class="string">'error'</span>, <span class="string">'No se puede retroceder'</span>);
+}
+</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: CRUD Usuarios -->
+    <div class="slide">
+        <h1 class="slide-title">👥 CRUD #4: Usuarios</h1>
+        <p class="slide-subtitle">app/Http/Controllers/Admin/UserController.php</p>
+        <div class="content">
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="icon">👤</div>
+                    <h4>Cliente</h4>
+                    <p>Compra productos, deja reseñas, usa chatbot</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🏪</div>
+                    <h4>Vendedor</h4>
+                    <p>Gestiona productos y categorías</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">👑</div>
+                    <h4>Admin</h4>
+                    <p>Acceso total al sistema</p>
+                </div>
+            </div>
+            <div class="card" style="max-width: 600px; margin: 30px auto 0;">
+                <h3>Cambio de Rol</h3>
+                <div class="code-block">
+<pre>
+<span class="variable">$validated</span> = <span class="variable">$request</span>-><span class="function">validate</span>([
+    <span class="string">'role'</span> => <span class="string">'required|in:cliente,vendedor,admin'</span>
+]);
+</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Carrito de Compras -->
+    <div class="slide">
+        <h1 class="slide-title">🛒 Carrito de Compras</h1>
+        <p class="slide-subtitle">API RESTful - app/Http/Controllers/Api/CartController.php</p>
+        <div class="content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Método</th>
+                        <th>Endpoint</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span style="color: #00ff88;">GET</span></td>
+                        <td>/api/cart</td>
+                        <td>Ver carrito actual</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #ffa500;">POST</span></td>
+                        <td>/api/cart/{id}</td>
+                        <td>Agregar producto</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #00d4ff;">PUT</span></td>
+                        <td>/api/cart/{id}</td>
+                        <td>Actualizar cantidad</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #ff4444;">DELETE</span></td>
+                        <td>/api/cart/{id}</td>
+                        <td>Quitar producto</td>
+                    </tr>
+                    <tr>
+                        <td><span style="color: #ff4444;">DELETE</span></td>
+                        <td>/api/cart</td>
+                        <td>Vaciar carrito</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 20px; padding: 20px; background: rgba(0,212,255,0.1); border-radius: 15px;">
+                <p><span class="highlight">Almacenamiento:</span> El carrito se guarda en <code>session()</code> para mejor rendimiento. Solo se persiste en BD al completar la compra.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Checkout -->
+    <div class="slide">
+        <h1 class="slide-title">💳 Proceso de Checkout</h1>
+        <div class="content">
+            <div class="flow-diagram">
+                <div class="flow-step">🛒 Carrito</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">📝 Datos Envío</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">💳 Pago</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">✅ Confirmación</div>
+            </div>
+            <div class="grid-2" style="margin-top: 30px;">
+                <div class="card">
+                    <h3>💵 Contra Entrega</h3>
+                    <p style="margin-top: 15px;">Pago al recibir el producto. Se procesa directamente.</p>
+                </div>
+                <div class="card">
+                    <h3>💳 Tarjeta</h3>
+                    <p style="margin-top: 15px;">Formulario de pago con validación de datos.</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <h3>Transacciones Seguras</h3>
+                <div class="code-block">
+<pre>
+DB::<span class="function">beginTransaction</span>();
+<span class="comment">// Crear orden, adjuntar productos, decrementar stock</span>
+<span class="variable">$product</span>-><span class="function">decrement</span>(<span class="string">'stock'</span>, <span class="variable">$quantity</span>);
+DB::<span class="function">commit</span>();
+</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Reseñas -->
+    <div class="slide">
+        <h1 class="slide-title">⭐ Sistema de Reseñas</h1>
+        <div class="content">
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Endpoints API</h3>
+                    <ul style="margin-top: 15px;">
+                        <li>POST /api/products/{id}/reviews → Crear</li>
+                        <li>PUT /api/reviews/{id} → Editar</li>
+                        <li>DELETE /api/reviews/{id} → Eliminar</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Validaciones</h3>
+                    <ul style="margin-top: 15px;">
+                        <li>Rating: 1 a 5 estrellas</li>
+                        <li>Comentario: máximo 1000 caracteres</li>
+                        <li>Solo si compró el producto</li>
+                        <li>Una reseña por producto</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <h3>Verificación de Compra</h3>
+                <div class="code-block">
+<pre>
+<span class="variable">$hasPurchased</span> = <span class="variable">$user</span>-><span class="function">orders</span>()
+    -><span class="function">whereHas</span>(<span class="string">'products'</span>, <span class="keyword">function</span>(<span class="variable">$q</span>) {
+        <span class="variable">$q</span>-><span class="function">where</span>(<span class="string">'product_id'</span>, <span class="variable">$productId</span>);
+    })-><span class="function">exists</span>();
+</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Chatbot IA -->
+    <div class="slide">
+        <h1 class="slide-title">🤖 Chatbot con IA</h1>
+        <p class="slide-subtitle">Integración con OpenRouter API</p>
+        <div class="content">
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="icon">💬</div>
+                    <h4>Chat Conversacional</h4>
+                    <p>Historial de mensajes guardado en BD</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🔍</div>
+                    <h4>Análisis de Productos</h4>
+                    <p>IA recomienda basado en datos</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📜</div>
+                    <h4>Historial</h4>
+                    <p>Recupera conversaciones anteriores</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <h3>Flujo del Chat</h3>
+                <div class="code-block">
+<pre>
+<span class="comment">// 1. Usuario envía mensaje</span>
+<span class="comment">// 2. Se guarda en ChatbotMessage (role: 'user')</span>
+<span class="comment">// 3. Se envía historial a OpenRouter AI</span>
+<span class="variable">$aiResponse</span> = <span class="variable">$this</span>->aiService-><span class="function">chat</span>(<span class="variable">$history</span>);
+<span class="comment">// 4. Se guarda respuesta (role: 'assistant')</span>
+</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Modelos -->
+    <div class="slide">
+        <h1 class="slide-title">📊 Modelos de Base de Datos</h1>
+        <div class="content">
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="icon">📦</div>
+                    <h4>Product</h4>
+                    <p>name, price, stock, category_id, image</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📂</div>
+                    <h4>Category</h4>
+                    <p>name, description</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">👤</div>
+                    <h4>User</h4>
+                    <p>name, email, password, role</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📋</div>
+                    <h4>Order</h4>
+                    <p>user_id, total, status, shipping</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">⭐</div>
+                    <h4>Review</h4>
+                    <p>user_id, product_id, rating, comment</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">💬</div>
+                    <h4>Conversation</h4>
+                    <p>user_id, title, messages</p>
+                </div>
+            </div>
+            <div style="margin-top: 30px; text-align: center;">
+                <p style="color: #888;">Relaciones: <span class="highlight">hasMany</span>, <span class="highlight">belongsTo</span>, <span class="highlight">belongsToMany</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Dashboard -->
+    <div class="slide">
+        <h1 class="slide-title">📈 Dashboard y Reportes</h1>
+        <div class="content">
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="icon">💰</div>
+                    <h4>Ventas del Mes</h4>
+                    <p>Total facturado y comparativa</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📊</div>
+                    <h4>Gráfico de Ventas</h4>
+                    <p>Tendencia por día/semana</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">🏆</div>
+                    <h4>Top Productos</h4>
+                    <p>Más vendidos del período</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">👥</div>
+                    <h4>Usuarios</h4>
+                    <p>Registros nuevos</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">📦</div>
+                    <h4>Órdenes</h4>
+                    <p>Pendientes y completadas</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon">⚠️</div>
+                    <h4>Stock Bajo</h4>
+                    <p>Alertas de inventario</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Conclusión -->
+    <div class="slide intro-slide">
+        <div class="content">
+            <h1 class="slide-title">✅ Resumen del Proyecto</h1>
+            <div class="stats-grid" style="margin-top: 40px;">
+                <div class="stat-item">
+                    <div class="big-number">4</div>
+                    <p class="label">CRUDs Completos</p>
+                </div>
+                <div class="stat-item">
+                    <div class="big-number">API</div>
+                    <p class="label">RESTful</p>
+                </div>
+                <div class="stat-item">
+                    <div class="big-number">IA</div>
+                    <p class="label">Chatbot</p>
+                </div>
+                <div class="stat-item">
+                    <div class="big-number">MVC</div>
+                    <p class="label">Arquitectura</p>
+                </div>
+            </div>
+            <div style="margin-top: 50px;">
+                <p style="font-size: 1.3rem; color: #888;">
+                    Sistema e-commerce completo con validaciones, transacciones,<br>
+                    autenticación por roles y buenas prácticas de desarrollo.
+                </p>
+            </div>
+            <div class="section-divider" style="margin: 40px auto;"></div>
+            <p style="font-size: 1.5rem;">
+                <span class="highlight">¡Gracias por su atención!</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" onclick="prevSlide()">←</button>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">15</span>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

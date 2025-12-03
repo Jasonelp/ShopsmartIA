@@ -27,11 +27,33 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $this->validateProduct($request);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0.01',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|url',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'is_active' => 'nullable|boolean',
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'price.required' => 'El precio es obligatorio.',
+            'stock.required' => 'El stock es obligatorio.',
+            'category_id.required' => 'Debes seleccionar una categoria.',
+            'image.url' => 'La URL de imagen debe ser una URL válida.',
+        ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('products', 'public');
+        // Manejar imagen: priorizar archivo subido sobre URL
+        if ($request->hasFile('image_file')) {
+            $validated['image'] = $request->file('image_file')->store('products', 'public');
+        } elseif ($request->filled('image')) {
+            // Si es una URL, guardarla directamente
+            $validated['image'] = $request->input('image');
         }
+
+        // Remover image_file del array validated
+        unset($validated['image_file']);
 
         Product::create($validated);
 
@@ -56,17 +78,43 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validated = $this->validateProduct($request);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0.01',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|url',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'is_active' => 'nullable|boolean',
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'price.required' => 'El precio es obligatorio.',
+            'stock.required' => 'El stock es obligatorio.',
+            'category_id.required' => 'Debes seleccionar una categoria.',
+            'image.url' => 'La URL de imagen debe ser una URL válida.',
+        ]);
 
         $product = Product::findOrFail($id);
 
-        if ($request->hasFile('image')) {
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
+        // Manejar imagen: priorizar archivo subido sobre URL
+        if ($request->hasFile('image_file')) {
+            // Eliminar imagen anterior si existe y es local
+            if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL) && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
-
-            $validated['image'] = $request->file('image')->store('products', 'public');
+            $validated['image'] = $request->file('image_file')->store('products', 'public');
+        } elseif ($request->filled('image')) {
+            // Si es una URL, guardarla directamente
+            // Eliminar imagen anterior si existe y es local
+            if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL) && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->input('image');
         }
+
+        // Remover image_file del array validated
+        unset($validated['image_file']);
 
         $product->update($validated);
 
@@ -84,7 +132,8 @@ class ProductController extends Controller
                 ->with('error', 'No se puede eliminar: producto esta en ordenes.');
         }
 
-        if ($product->image && Storage::disk('public')->exists($product->image)) {
+        // Solo eliminar si es imagen local
+        if ($product->image && !filter_var($product->image, FILTER_VALIDATE_URL) && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);
         }
 
@@ -93,22 +142,5 @@ class ProductController extends Controller
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Producto eliminado correctamente.');
-    }
-
-    private function validateProduct(Request $request)
-    {
-        return $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0.01',
-            'stock' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-        ], [
-            'name.required' => 'El nombre es obligatorio.',
-            'price.required' => 'El precio es obligatorio.',
-            'stock.required' => 'El stock es obligatorio.',
-            'category_id.required' => 'Debes seleccionar una categoria.',
-        ]);
     }
 }
