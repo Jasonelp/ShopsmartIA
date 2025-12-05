@@ -1,0 +1,6 @@
+﻿01a6813 Mejorando d├¡a  y noche
+866146a Merge pull request #2 from Jasonelp/feature/chatbot-ia
+6c5ff11 feat: Implementar chatbot IA con OpenRouter y memoria de conversaci├│n
+c64354b Merge pull request #1 from Jasonelp/claude/improve-api-01TFobzoY81unELvd2YVxYFq
+4a6bdef feat: Implementar mejoras completas de API RESTful
+f5888c4 retoques finales del proyecto
